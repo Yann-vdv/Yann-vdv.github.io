@@ -64,5 +64,5 @@ nav p{
     width: 240px;
 }
 .markdown-body h1 {
-    border-bottom: 0px;
+    border-bottom: 0px !important;
 }
