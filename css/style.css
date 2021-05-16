@@ -1,0 +1,65 @@
+nav{
+    display: flex;
+    background-color: #0d6efd;
+    color: white;
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+nav h1{
+    flex-grow: 1;
+}
+nav p{
+    align-self: center;
+    margin: 0 3%;
+}
+#batterie {
+    margin: 3vh;
+}
+.flexJ{
+    display: flex;
+    justify-content: center;
+}
+.flexJ input{
+    margin-top: 2vh;
+}
+.grid-container{
+    display: grid;
+    grid: 'form picture';
+    gap: 5%;
+    width: 100%;
+}
+#listeDesCourses li {
+    display: flex;
+    justify-content: space-between;
+    margin : 1vh 0vh;
+}
+#listeDesCourses div {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+#pic {
+    height: 180px !important;
+    width: 240px !important;
+}
+#listeDesCourses img{
+    width: 7vh;
+    height: auto;
+    margin: 1vh 0vh;
+}
+.GformText{
+    grid-area: form;
+}
+.GformP{
+    grid-area: picture;
+}
+#takePhoto{
+    height: 180px;
+    width: 240px;
+}
+#getStream{
+    height: 180px;
+    width: 240px;
+}
