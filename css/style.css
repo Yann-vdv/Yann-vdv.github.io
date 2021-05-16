@@ -8,6 +8,7 @@ nav{
 }
 nav h1{
     flex-grow: 1;
+    border-bottom: 0px !important;
 }
 nav p{
     align-self: center;
@@ -62,7 +63,4 @@ nav p{
 #getStream{
     height: 180px;
     width: 240px;
-}
-.markdown-body h1 {
-    border-bottom: 0px !important;
 }
