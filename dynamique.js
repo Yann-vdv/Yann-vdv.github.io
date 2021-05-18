@@ -63,7 +63,6 @@ $(document).ready(function () {
 
         batteryPromise.then(function (battery) {
             document.getElementById('charging').innerHTML = battery.charging ? 'chargement' : 'déchargement';
-            //console.log(battery.chargingTime); //le chargingTime ne semble pas fonctionner et reste bloqué à "Infinity" (sur mon PC du moins)
             if (battery.chargingTime != "Infinity"){
                 document.getElementById('chargingTime').innerHTML = battery.chargingTime + ' s';
             }
@@ -198,7 +197,6 @@ $(document).ready(function () {
     document.querySelectorAll('#editProduit').forEach(item => {
         item.addEventListener('click', event => {
             var nbProduit = item.dataset.nbproduit;
-            console.log("coucou ", document.getElementById("btnNvProduit").id);
             //adapter le form pour éditer
             tab = localStorage.getItem(("produit", nbProduit)).split(",je split,");
             nom = tab[0];
