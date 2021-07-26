@@ -1,66 +1,44 @@
-nav{
-    display: flex;
-    background-color: #0d6efd;
-    color: white;
-    text-align: center;
-    padding-top: 1%;
-    padding-bottom: 1%;
+body {
+  margin: 0px;
+  background-color: lightgrey;
 }
-nav h1{
-    flex-grow: 1;
-    border-bottom: 0px !important;
+nav {
+  position: sticky;
+  background-color: lightskyblue;
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-size: x-large;
 }
-nav p{
-    align-self: center;
-    margin: 0 3%;
+.main_div {
+  display: flex;
+  justify-content: center;
 }
-#batterie {
-    margin: 3vh;
+.divSite {
+  margin: 10vh;
+  width: 40vh;
+  height: fit-content;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.flexJ{
-    display: flex;
-    justify-content: center;
+.divSite a {
+  text-decoration: none;
+  margin: 1vh;
 }
-.flexJ input{
-    margin-top: 2vh;
+#descSMB,
+#descPFW {
+  display: none;
+  text-align: center;
+  margin: 1vh;
 }
-.grid-container{
-    display: grid;
-    grid: 'form picture';
-    gap: 5%;
-    width: 100%;
+p {
+  margin: 0px;
 }
-#listeDesCourses li {
-    display: flex;
-    justify-content: space-between;
-    margin : 1vh 0vh;
-}
-#listeDesCourses div {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-}
-#pic {
-    height: 180px !important;
-    width: 240px !important;
-}
-#listeDesCourses img{
-    width: 7vh;
-    height: auto;
-    margin: 1vh 0vh;
-}
-.GformText{
-    grid-area: form;
-}
-.GformP{
-    grid-area: picture;
-}
-#takePhoto{
-    height: 180px;
-    width: 240px;
-}
-#getStream{
-    height: 180px;
-    width: 240px;
+.titre {
+  font-size: x-large;
 }

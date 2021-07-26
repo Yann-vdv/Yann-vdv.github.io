@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Super Mario Bross</title>
+ <meta charset="utf-8">
+ <link rel="stylesheet" type="text/css" href="../css/SuperMarioBros.css">
+ <link href='https://fonts.googleapis.com/css?family=Arbutus' rel='stylesheet'>
+</head>
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+<div class="score">
+    <h1 class="pièces">PIECES :</h1>
+    <h1 id="NbPièce">0</h1>
+    <img class="title" onclick="AfficherInstru()" src="../image/TitleMario.png">
+    <h1 class="time">TIME :</h1>
+    <h1 id="Chrono"><script>document.write(sessionStorage.getItem("chrono"))</script></h1>
+</div>
+<div id="gg">
+    
+</div>
+<img id="marioD" class="marioC" src="../image/MarioT.png">
+<img id="marioG" class="marioC" src="../image/MarioTG.png">
+<img id="marioDS" class="marioC" src="../image/MarioSauteT.png">
+<img id="marioGS" class="marioC" src="../image/MarioSauteTG.png">
+<img id="block" class="marioC" src="../image/HardBlock.png">
+<img id="GameOver" class="marioC" src="../image/GameOver.jpg">
+<img id="pièce" class="marioC" src="../image/pièceT.png">
+<img id="tuyau2" class="marioC" src="../image/TuyauPT.png">
+<img id="goomba" class="marioC" src="../image/goombaT.png">
+<img id="goombaG" class="marioC" src="../image/goomba2T.png">
+<img id="goombaM" class="marioC" src="../image/goombaMT.png">
+<img id="GoalPole" class="marioC" src="../image/GoalPoleVideT.png">
+<img id="flag" class="marioC" src="../image/flagT.png">
+<div id="center">
+    <div id="gg">
+        <h1>VOUS AVEZ GAGNE</h1>
+        <div><h3 id="FinScore">Votre score : </h3><p id="ScoreFinal">0</p></div>
+        <button class="AffDet" onclick="Détails()">Détails</button>
+        <div id="ListDet">
+            <div>
+                <h3>pièce(s)</h3>
+                <p id="NbPièce2">0</p>
+            </div>
+            <div>
+                <h3>goomba</h3>
+                <p id="NbGoomba">0</p>
+            </div>
+            <div>
+                <h3>temps restant</h3>
+                <p id="Chrono2">0</p>
+            </div>
+            <div>
+                <h3>drapeau</h3>
+                <div class="drapeau"><p id="Drapeau">0</p><p>/10</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="background" width="1200" height="600"></canvas>
+
+<script>
+    var z = document.getElementById("center");
+    var x = document.getElementById("ListDet");
+    x.style.display = "none";
+    function Détails () {
+        if (x.style.display === "none") {
+            x.style.display = "flex";
+        } 
+        else {
+            x.style.display = "none";
+        }
+    }
+
+    var canvas = document.getElementById("background");
+
+    var ctx = canvas.getContext("2d");
+
+    var marioD = document.getElementById("marioD");
+    var marioG = document.getElementById("marioG");
+    var marioDS = document.getElementById("marioDS");
+    var marioGS = document.getElementById("marioGS");
+    var block = document.getElementById("block");
+    var GameOver = document.getElementById("GameOver");
+    var pièce = document.getElementById("pièce");
+    var tuyau = document.getElementById("tuyau2");
+    var goomba = document.getElementById("goomba");
+    var goombaG = document.getElementById("goombaG");
+    var goombaM = document.getElementById("goombaM");
+    var GoalPole = document.getElementById("GoalPole");
+    var flag = document.getElementById("flag");
+
+    var GameOverSound = new Audio('../audio/smb_gameover.wav');
+    var CoinSound = new Audio('../audio/Coin.ogg');
+    var JumpSound = new Audio('../audio/Jump.ogg');
+    var OutOfTime = new Audio('../audio/smb_warning.wav');
+    var kick = new Audio('../audio/smb_kick.wav');
+    var StageClear = new Audio('../audio/smb_stage_clear.wav');
+    var FlagPole = new Audio('../audio/smb_flagpole.wav');
+   
+    var marioX = 80;
+    var marioY = 482;
+    var marioWidth = 60;
+    var marioHeight = 60;
+    var GoD = false;            //si false regarde à droite / si true regarde à droite
+
+    var goombaX = 250;
+    var g = 2.5;
+    var goombaV = true;         //verif si goomba en vie
+    var Nbgoomba = 0;
+
+    var CanJump = true;
+    var OriginHeight = 482;
+    var TempsUppressed = 0;
+    var Saut1 = false;          //petit saut
+    var TempsSaut1 = 20;
+    var Saut2 = false;          //grand saut
+    var TempsSaut2 = 20;
+
+    var rightPressed=false;
+    var leftPressed=false;
+    var upPressed=false;
+    var downPressed=false;
+    var end = true;             //end = false ---> fin du jeu
+
+    var c = 1;
+
+    var flagY = 130;
+    var BasPole = false;
+    var FlagDawn = false;
+    var FlagScore = true;
+    var Pdrapeau = 0;
+    var SoundFin = true;        //pour ne jouern q'une fois le son de fin
+
+    var DrawInterval = setInterval(draw, 10);
+    
+    var EtatPièce = true;
+
+    var chrono = sessionStorage.getItem("chrono");
+    var NbpièceS = sessionStorage.getItem("Nbpièce");
+    var Nbpièce = parseInt(NbpièceS);
+    NbPièce.innerHTML = Nbpièce ;
+
+    sessionStorage.setItem("chrono",0);             //pour pas tricher en rafraichissant
+    sessionStorage.setItem("Nbpièce",0);            //mettre en com pour faciliter le dev
+
+    function AfficherInstru() {
+        sessionStorage.setItem("START",false);
+        document.location.href = "SuperMarioBros.html";
+    }
+
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+    function keyDownHandler(e) {
+        if(e.keyCode == 39 || e.keyCode == 68) {
+            rightPressed = true;
+            GoD = false;
+        }
+        else if(e.keyCode == 37 || e.keyCode == 81) {
+            leftPressed = true;
+            GoD = true;
+        }
+        else if(e.keyCode == 38 || e.keyCode == 32 || e.keyCode == 90) {
+            upPressed = true;
+        }
+        else if (e.keyCode == 40 || e.keyCode == 83) {
+            downPressed = true;
+        }
+        else if (e.keyCode == 13) {
+            sessionStorage.setItem("START",true);
+            document.location.href = "SuperMarioBros.html";
+        }
+    }
+
+    function keyUpHandler(e) {
+        if(e.keyCode == 39 || e.keyCode == 68) {
+            rightPressed = false;
+        }
+        else if(e.keyCode == 37 || e.keyCode == 81) {
+            leftPressed = false;
+        }
+        else if(e.keyCode == 38 || e.keyCode == 32 || e.keyCode == 90) {
+            upPressed = false;
+        }
+        else if (e.keyCode == 40 || e.keyCode == 83) {
+            downPressed = false;
+        }
+    }
+    function Time() {
+        chrono = chrono -c;
+        Chrono.innerHTML = chrono;
+        if (chrono == 10) {
+            OutOfTime.play();
+        }
+    }
+    setInterval(Time,1000)
+    function SAUT() {
+        if (TempsUppressed < 15) {
+            if(upPressed && Saut2 == false) {
+                TempsUppressed = TempsUppressed + 1;
+                Saut1 = true;
+                JumpSound.play();
+            }
+            if (Saut1 && TempsSaut1 > 0) {
+                marioY-=8;
+                TempsSaut1 = TempsSaut1 - 1;
+            }
+            if (TempsSaut1 <= 0) {
+                TempsSaut1 = 20;
+                Saut1 = false;
+                CanJump = false;
+                TempsUppressed = 0;
+            }
+        }
+        else if (TempsUppressed >= 15) {
+            Saut1 = false;
+            Saut2 = true;
+            TempsSaut1 = 20;
+            if (Saut2 && TempsSaut2 > 0) {
+                marioY-=8;
+                TempsSaut2 = TempsSaut2 - 1;
+            }
+            if (TempsSaut2 <=0) {
+                TempsSaut2 = 20;
+                Saut2 = false;
+                CanJump = false;
+                TempsUppressed = 0;
+            }
+        }
+    }
+    function DEPLACEMENTHORIZON() { 
+        if(rightPressed && end) {                             //DEPLACEMENT DROITE
+            marioX += 4.8;
+            if ((marioX + marioWidth) >= 657 && (marioX + marioWidth) < 670 && marioY > (446 - marioHeight)) {
+                marioX = (657 - marioWidth);
+            }                                               //bloquage au bord des obtacles
+            if ((marioX + marioWidth) >= 765 && (marioX + marioWidth) < 778 && marioY > (350 - marioHeight)) {
+                marioX = (765 - marioWidth);
+            }
+            if ((marioX + marioWidth)>1029 && (marioX + marioWidth) < 1040 && marioY > 440){
+                marioX = (1029 - marioWidth);
+            }
+        }
+        else if(leftPressed && end) {                      //DEPLACEMENT GUAUCHE
+            marioX -= 4.8;
+            if (marioX < 0) {           //bloque au bord guauche
+                marioX = 0;
+            }
+            if (marioX < 74 && marioY >= 402.5) {       //bloque au bord du tuyau
+                marioX = 74;
+            }
+            if ((marioX) > 680 && (marioX) <= 691 && marioY > (446 - marioHeight)) {
+                marioX = (691);
+            }                                           //bloquage au bord des obstacles
+            if ((marioX) > 788 && (marioX) <= 799 && marioY > (350 - marioHeight)) {
+                marioX = (799);
+            }
+        }
+    }
+    function TUYAU() {
+        ctx.drawImage(tuyau, 0, 461.5, 80, 80);
+    }
+    function obstacle() {
+        ctx.drawImage(block, 650, 494, 48, 48);
+        ctx.drawImage(block, 650, 446, 48, 48);
+
+        ctx.drawImage(block, 758, 494, 48, 48);
+        ctx.drawImage(block, 758, 446, 48, 48);
+        ctx.drawImage(block, 758, 398, 48, 48);
+        ctx.drawImage(block, 758, 350, 48, 48);
+    }
+    function goal() {
+        ctx.drawImage(GoalPole,1000,105,62.4,436.8);
+        ctx.drawImage(flag,1009,flagY,32,32);
+    }
+    function Goumba() {
+        goombaX += g;
+        if (marioX <= (goombaX+5) && (marioX + marioWidth) >= (goombaX-5) && marioY < 465 && marioY >= 450 && goombaV && CanJump == false) {
+            goombaV = false;
+            g = 0;
+            Nbgoomba = Nbgoomba +1;
+            kick.play();
+        }
+        if (goombaV) {
+            if (goombaX >= 600) {
+                g = -2.5;
+            }
+            if (goombaX < 200) {
+                g = 2.5;
+            }
+            if (g == -2.5) {
+                ctx.drawImage(goomba, goombaX, 502, 40, 40);
+            }
+            if (g == 2.5) {
+                ctx.drawImage(goombaG, goombaX, 502, 40, 40);
+            }
+        }
+        if (goombaV == false) {
+            ctx.drawImage(goombaM, goombaX, 522, 40, 20);
+        }
+    }
+    function Pièce() {
+        if ((marioX + marioWidth) >= 500 && marioX <= 548 && marioY <= 158 && (marioY + marioHeight) >= 110 && EtatPièce){
+            Nbpièce = Nbpièce +1;
+            NbPièce.innerHTML = Nbpièce;                    //gagne la pièce au dessus du trou
+            EtatPièce = false;
+            CoinSound.play();
+        }
+    }
+    function drapeau() {
+        FlagPole.play();
+        if (marioY <= 105) {
+            Pdrapeau = 10;
+        }
+        else if (marioY <= 138.5) {
+            Pdrapeau = 9;
+        }
+        else if (marioY <= 172) {
+            Pdrapeau = 8;
+        }
+        else if (marioY <= 205.5) {
+            Pdrapeau = 7;
+        }
+        else if (marioY <= 239) {
+            Pdrapeau = 6;
+        }
+        else if (marioY <= 272.5) {
+            Pdrapeau = 5;
+        }
+        else if (marioY <= 306) {
+            Pdrapeau = 4;
+        }
+        else if (marioY <= 339.5) {
+            Pdrapeau = 3;
+        }
+        else if (marioY <= 373) {
+            Pdrapeau = 2;
+        }
+        else if (marioY <= 406.5) {
+            Pdrapeau = 1;
+        }
+        else if (marioY <= 440) {
+            Pdrapeau = 0.5;
+        }
+    }
+    function MARIO() {
+        if ((Saut1 || Saut2) && GoD) {
+            ctx.drawImage(marioGS, marioX, marioY, marioWidth, marioHeight);
+        }
+        else if (Saut1 || Saut2) {
+            ctx.drawImage(marioDS, marioX, marioY, marioWidth, marioHeight);
+        }
+        else if (GoD) {
+            ctx.drawImage(marioG, marioX, marioY, marioWidth, marioHeight);
+        }
+        else 
+        {
+            ctx.drawImage(marioD, marioX, marioY, marioWidth, marioHeight);
+        }
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (EtatPièce) {
+            ctx.drawImage(pièce,500,110,48,48)                          //affiche pièce au dessus du trou
+        }
+
+        MARIO();;
+
+        Goumba();
+        TUYAU();
+        obstacle();
+        goal();
+        Pièce();
+        if (marioX <= (goombaX + 20) && (marioX + marioWidth -15) >= goombaX && marioY >= 477 && goombaV) {
+            ctx.drawImage(GameOver, 0, 0, 1200, 600);
+            c=0;
+            if (end) {
+                GameOverSound.play();                           //meurt par le goomba (si en vie)
+            }
+            end = false;
+            g=0;
+        }
+        var OriginHeight = 482;
+
+        if (marioX < 74 && marioY <= 402) {
+            OriginHeight = 402;                     //maintient sur tuyau
+        }
+        if ((marioX + marioWidth) > 657 && marioX < 691) {
+            OriginHeight = (446 - marioHeight);
+        }                                           //maintient sur les obstacles 
+        if ((marioX + marioWidth) > 765 && marioX < 799) {
+            OriginHeight = (350 - marioHeight);
+        }
+        if ((marioX + marioWidth) > 1029 && marioX < 1050) {
+            OriginHeight = 440;                     //maintient base du goal
+        }
+        if (CanJump && end) {                              //SAUT
+            SAUT();
+        }
+        if (end && Saut1 == false && Saut2 == false) {                 //GRAVITE
+            marioY += 6;
+            if (marioY > OriginHeight) {            //maintient au sol
+                marioY = OriginHeight;
+            }
+            if (marioY >= OriginHeight) {           //si au sol, peut sauter
+                CanJump = true;
+            }
+        }
+        DEPLACEMENTHORIZON();
+        if (chrono <= 0) {
+            ctx.drawImage(GameOver, 0, 0, 1200, 600);       //GameOver temps dépassé
+            c = 0;
+            if (end) {
+                GameOverSound.play();
+            }
+            end=false;
+        }
+        if ((marioX + marioWidth)>=1038 && marioY < 440) {
+            end = false;
+            marioY +=5;                                     //capte l'arrivé au drapeau puis annimation
+            BasPole = true;
+            FlagDawn = true;
+            c=0;
+            if (FlagScore) {                //calcul le score drapeau une fois
+                drapeau();
+                FlagScore = false;
+            }
+        }
+        if (FlagDawn) {
+            if (flagY <= 468) {
+                flagY +=5;
+            }
+            else {
+                z.style.display = "block";
+            }
+        }
+        if (marioY >=440 && BasPole) {
+            marioX +=4;
+            if (marioX > 1050 && marioY < 482) {
+                marioY +=5;
+            }
+            if (marioY > 482) {
+                marioY=482;
+            }
+            if (marioX > 1200) {
+                marioX+=0;
+                NbGoomba.innerHTML = Nbgoomba;          //données pour le score
+                Chrono2.innerHTML = chrono;
+                NbPièce2.innerHTML = Nbpièce;
+                Drapeau.innerHTML = Pdrapeau;
+                ScoreFinal.innerHTML = (Nbpièce * 10) + (Nbgoomba * 40) + chrono + (Pdrapeau * 10);
+                if (SoundFin) {
+                    StageClear.play();
+                    SoundFin = false;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Super Mario Bross</title>
+ <meta charset="utf-8">
+ <link rel="stylesheet" type="text/css" href="../css/SuperMarioBros.css">
+ <link href='https://fonts.googleapis.com/css?family=Arbutus' rel='stylesheet'>
+</head>
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+<div class="score">
+    <h1 class="pièces">PIECES :</h1>
+    <h1 id="NbPièce">0</h1>
+    <img class="title" onclick="AfficherInstru()" src="../image/TitleMario.png">
+    <h1 class="time">TIME :</h1>
+    <h1 id="Chrono">100</h1>
+    
+</div>
+<img id="marioD" class="marioC" src="../image/MarioT.png">
+<img id="marioG" class="marioC" src="../image/MarioTG.png">
+<img id="marioDS" class="marioC" src="../image/MarioSauteT.png">
+<img id="marioGS" class="marioC" src="../image/MarioSauteTG.png">
+<img id="block" class="marioC" src="../image/Block.png">
+<img id="BlockMystère" class="marioC" src="../image/BlockMystèreT.png">
+<img id="BlockMystèreVideT" class="marioC" src="../image/BlockMystèreVideT.png">
+<img id="GameOver" class="marioC" src="../image/GameOver.jpg">
+<img id="pièce" class="marioC" src="../image/pièceT.png">
+<img id="tuyau" class="marioC" src="../image/TuyauT.png">
+<div id="center2">
+    <img src="../image/Instructions.png">
+    <button id="PLAY" onclick="Instru()"></button>
+</div>
+<canvas id="background" width="1200" height="600">
+
+
+
+</canvas>
+
+<script>
+    var x = document.getElementById("center2");
+    var START = sessionStorage.getItem("START");
+
+    var canvas = document.getElementById("background");
+
+    var ctx = canvas.getContext("2d");
+
+    var marioD = document.getElementById("marioD");
+    var marioG = document.getElementById("marioG");
+    var marioDS = document.getElementById("marioDS");
+    var marioGS = document.getElementById("marioGS");
+    var block = document.getElementById("block");
+    var BlockMystère = document.getElementById("BlockMystère");
+    var BlockMystèreVideT = document.getElementById("BlockMystèreVideT");
+    var GameOver = document.getElementById("GameOver");
+    var pièce = document.getElementById("pièce");
+    var tuyau = document.getElementById("tuyau");
+
+    var GameOverSound = new Audio('../audio/smb_gameover.wav');
+    var CoinSound = new Audio('../audio/Coin.ogg');
+    var CoinSound2 = new Audio('../audio/Coin.ogg');
+    var CoinSound3 = new Audio('../audio/Coin.ogg');
+    var JumpSound = new Audio('../audio/Jump.ogg');
+    var OutOfTime = new Audio('../audio/smb_warning.wav');
+   
+    var marioX = 40;
+    var marioY = 482;
+    var marioWidth = 60;
+    var marioHeight = 60;
+    var GoD = false;            //si false regarde à droite / si true regarde à droite
+
+    var CanJump = true;
+    var OriginHeight = 482;
+    var ObstacleHeigth = 276;
+    var TempsUppressed = 0;
+    var Saut1 = false;          //petit saut
+    var TempsSaut1 = 20;
+    var Saut2 = false;          //grand saut
+    var TempsSaut2 = 20;
+    var TempsTuyau = 5;         //tuyau utilisé
+    var TuyauUti = false;
+
+    var rightPressed=false;
+    var leftPressed=false;
+    var upPressed=false;
+    var downPressed=false;
+    var end = false;             //end = false ---> fin du jeu ou écran d'acceuil
+
+    var chrono = 100;
+    var c = 0;
+
+    var DrawInterval = setInterval(draw, 10);
+    
+    var UsageBM = 0;
+    var Nbpièce = 0;
+
+    var EtatPièce = true;
+
+    if (START == "true") {
+        x.style.display = "none";
+        c = 1;
+        end = true;
+    }
+    else
+        x.style.display = "flex";
+    function Instru () {
+        if (x.style.display === "flex") {
+            x.style.display = "none";
+            c = 1;
+            end = true;
+            START = true;
+        } 
+    }
+    function AfficherInstru() {
+        sessionStorage.setItem("START",false);
+        document.location.href = "SuperMarioBros.html";
+    }
+
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+    function keyDownHandler(e) {
+        if(e.keyCode == 39 || e.keyCode == 68) {
+            rightPressed = true;
+            GoD = false;
+        }
+        else if(e.keyCode == 37 || e.keyCode == 81) {
+            leftPressed = true;
+            GoD = true;
+        }
+        else if(e.keyCode == 38 || e.keyCode == 32 || e.keyCode == 90) {
+            upPressed = true;
+        }
+        else if (e.keyCode == 40 || e.keyCode == 83) {
+            downPressed = true;
+        }
+        else if (e.keyCode == 13) {
+            sessionStorage.setItem("START",true);
+            document.location.href = "SuperMarioBros.html";
+        }
+    }
+
+    function keyUpHandler(e) {
+        if(e.keyCode == 39 || e.keyCode == 68) {
+            rightPressed = false;
+        }
+        else if(e.keyCode == 37 || e.keyCode == 81) {
+            leftPressed = false;
+        }
+        else if(e.keyCode == 38 || e.keyCode == 32 || e.keyCode == 90) {
+            upPressed = false;
+        }
+        else if (e.keyCode == 40 || e.keyCode == 83) {
+            downPressed = false;
+        }
+    }
+    function obstacle() {
+        if (UsageBM >=4) {
+            ctx.drawImage(BlockMystèreVideT, 352, 336, 48, 48);     //met le BM vide quand 4 pièces prisent
+        }
+        else {
+            ctx.drawImage(BlockMystère, 352, 336, 48, 48);
+        }
+        ctx.drawImage(block, 304, 336, 48, 48);
+        ctx.drawImage(block, 400, 336, 48, 48);
+    }
+    function trou() {
+        ctx.rect(680, 542, 200, 200);
+        ctx.fillStyle = "0";
+        ctx.fill();
+    }
+    function Mpièce() {
+        ctx.drawImage(pièce, 352, 282, 48, 48);
+    }
+    function Mpièce2() {
+        ctx.drawImage(pièce, 752, 300, 48, 48);
+    }
+    function Time() {
+        chrono = chrono -c;
+        Chrono.innerHTML = chrono;
+        if (chrono == 10) {
+            OutOfTime.play();
+        }
+    }
+    setInterval(Time,1000)
+    function SAUT() {
+        if (TempsUppressed < 15) {
+            if(upPressed && Saut2 == false) {
+                TempsUppressed = TempsUppressed + 1;
+                Saut1 = true;
+                JumpSound.play();
+            }
+            if (Saut1 && TempsSaut1 > 0) {
+                marioY-=8;
+                TempsSaut1 = TempsSaut1 - 1;
+            }
+            if (TempsSaut1 <= 0) {
+                TempsSaut1 = 20;
+                Saut1 = false;
+                CanJump = false;
+                TempsUppressed = 0;
+            }
+        }
+        else if (TempsUppressed >= 15) {
+            Saut1 = false;
+            Saut2 = true;
+            TempsSaut1 = 20;
+            if (Saut2 && TempsSaut2 > 0) {
+                marioY-=8;
+                TempsSaut2 = TempsSaut2 - 1;
+            }
+            if (TempsSaut2 <=0) {
+                TempsSaut2 = 20;
+                Saut2 = false;
+                CanJump = false;
+                TempsUppressed = 0;
+            }
+        }
+        if (marioX >= 256 && marioX < 436 && marioY >= 360 && marioY <= 370 && Saut1) {
+            Saut1 = false;
+            CanJump = false;
+            TempsSaut1 = 0;
+        }
+    }
+    function DEPLACEMENTHORIZON() { 
+        if(rightPressed && end) {                             //DEPLACEMENT DROITE
+            marioX += 4.8;
+            if (marioY >= 278 && marioY < 368 && marioX >= 256 && marioX <= 436) {      //bout droit de l'obstacle
+                marioX = 252;       
+            }
+            if (marioY >= 401.6 && marioX >= 942 && marioX <= 1000) {                   //bout droit tuyau
+                marioX = 946;
+            }
+        }
+        else if(leftPressed && end) {                      //DEPLACEMENT GUAUCHE
+            marioX -= 4.8;
+            if (marioX < 0) {           //bloque au bord guauche
+                marioX = 0;
+            }
+            if (marioY >= 278 && marioY < 368 && marioX >= 336 && marioX <= 436) {      //bout gauche de l'obstacle
+                marioX = 440;
+            }
+            if (marioY > 401.5 && marioX > 1000 && marioX < 1078) {                 //bout gauche tuyau
+                marioX = 1075;
+            }
+        }
+    }
+    function TROUetPIECE() {
+        if (marioX >= 680 && marioX <= (880 - marioWidth) && marioY >= 480) {           //chute trou
+            end = false;
+            marioY += 6;
+            if (marioY >= 640) {        //tombe pas à l'infini lol (juste hors de l'écran)
+                marioY = 640;
+                ctx.drawImage(GameOver, 0, 0, 1200, 600);
+                if (c != 0) {
+                    GameOverSound.play();
+                }
+                c=0;
+            }   
+        }
+        if ((marioX + marioWidth) >= 752 && marioX <= 800 && (marioY - marioHeight) <= 348 && marioY >= 300 && EtatPièce){
+            Nbpièce = Nbpièce +1;
+            NbPièce.innerHTML = Nbpièce;                    //gagne la pièce au dessus du trou
+            EtatPièce = false;
+            CoinSound.play();
+        }
+    }
+    function TUYAU() {
+        ctx.drawImage(tuyau, 1000, 461.5, 80, 80);
+    }
+    function audio() {
+        if (marioX >= 320 && marioX < 372 && marioY <= 376 && marioY > 360 && UsageBM <= 4) {
+            if (Nbpièce  == 0 || Nbpièce == 3) {
+                CoinSound.play();
+            }
+            else if (Nbpièce == 1) {
+                CoinSound2.play();
+            }
+            else if (Nbpièce == 2) {
+                CoinSound3.play();
+            }
+        }
+    }
+    function MARIO() {
+        if ((Saut1 || Saut2) && GoD) {
+            ctx.drawImage(marioGS, marioX, marioY, marioWidth, marioHeight);
+        }
+        else if (Saut1 || Saut2) {
+            ctx.drawImage(marioDS, marioX, marioY, marioWidth, marioHeight);
+        }
+        else if (GoD) {
+            ctx.drawImage(marioG, marioX, marioY, marioWidth, marioHeight);
+        }
+        else 
+        {
+            ctx.drawImage(marioD, marioX, marioY, marioWidth, marioHeight);
+        }
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        trou();
+        if (EtatPièce) {
+            Mpièce2();                          //affiche pièce au dessus du trou
+        }
+        MARIO();
+        
+        TUYAU();
+
+        var OriginHeight = 482;
+        obstacle();
+        
+        if (marioX >= 256 && marioX < 436 && marioY <= ObstacleHeigth) {                    //saut sur l'obstacle
+            OriginHeight = ObstacleHeigth;                                      //maintient sur l'obstacle
+        }
+        if (marioX >= 950 && marioX <= 1070 && marioY <= 401.5) {                    //saut sur le tuyau
+            if (TuyauUti == false) {
+                OriginHeight = 401.5;                                               //maintient sur le tuyau
+            }
+            if (downPressed && marioX >= 1000 && marioX <= 1020 && marioY == 401.5) {
+                TuyauUti = true;
+            }  
+        }
+        if (TuyauUti) {                             //temps de chute dans le tuyau
+           if (TempsTuyau > 0) {
+                marioY+=8;
+                TempsTuyau = TempsTuyau -1;
+                OriginHeight = 482;
+            }
+            else if (TempsTuyau <=0) {                      //passe dans le tuyau (fond du tuyau)
+                end = false;
+                c=0;
+                sessionStorage.setItem("chrono",chrono);
+                sessionStorage.setItem("Nbpièce",Nbpièce);      //sauvegarde les var puis page2
+                window.location = "SuperMarioBros2.html";
+            }
+        } 
+        if (marioX >= 320 && marioX < 372 && marioY <= 376 && marioY > 360) {       //block mystère / pièces
+            UsageBM = UsageBM +1;
+            if (UsageBM <= 4) {
+                Nbpièce = Nbpièce +1;                       //gagne jusqu'a 4 pièces sur le block mystère
+                NbPièce.innerHTML = Nbpièce;
+                Mpièce();
+            }  
+        }
+        if (marioX >= 320 && marioX < 372 && UsageBM <= 4 && marioY <= 400 && marioY > 360 && CanJump == false) {
+            Mpièce();                       //prolonge l'afficahge de la pièce, plus beau
+        }
+        if (CanJump && end) {                              //SAUT
+            SAUT();
+        }
+        if (end && Saut1 == false && Saut2 == false) {                 //GRAVITE
+            marioY += 6;
+            if (marioY > OriginHeight) {            //maintient au sol
+                marioY = OriginHeight;
+            }
+            if (marioY >= OriginHeight) {           //si au sol, peut sauter
+                CanJump = true;
+                    JumpSound.pause();                                  //réinitialistion bruit saut une fois au sol
+                    JumpSound = new Audio('../audio/Jump.ogg');
+            }
+        }
+        DEPLACEMENTHORIZON();
+        TROUetPIECE();
+        if (chrono <= 0) {
+            ctx.drawImage(GameOver, 0, 0, 1200, 600);       //GameOver temps dépassé
+            clearInterval(Time);
+            if (c != 0) {
+                GameOverSound.play();
+            }
+            c = 0;
+        }
+        if (marioX + marioWidth >= canvas.width) {       //gagne au bord droit
+            marioX = canvas.width - marioWidth;
+        }
+        audio();
+    }
+</script>
+</body>
+</html>
