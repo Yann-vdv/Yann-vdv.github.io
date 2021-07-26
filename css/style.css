@@ -10,8 +10,14 @@ nav {
   justify-content: center;
   font-size: x-large;
 }
+nav h1 {
+  text-align: center;
+  margin-left: 1vh;
+  margin-right: 1vh;
+}
 .main_div {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 .divSite {
