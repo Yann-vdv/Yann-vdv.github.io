@@ -194,36 +194,32 @@ $(document).ready(function () {
     }
 
     //EDITER UN PRODUIT
-    document.querySelectorAll('#editProduit').forEach(item => {
-        item.addEventListener('click', event => {
-            var nbProduit = item.dataset.nbproduit;
-            //adapter le form pour éditer
-            tab = localStorage.getItem(("produit", nbProduit)).split(",je split,");
-            nom = tab[0];
-            desc = tab[1];
-            picture = tab[2];
-            document.getElementById("Nom").value = nom;
-            document.getElementById("Desc").value = desc;
-            //si cam, cam stop
-            if (!theStream in window) {
-                theStream.getTracks()[0].stop();
-            }
-            document.getElementById("takePhoto").classList = "d-none";
-            document.getElementById("getStream").classList = "";
-            document.getElementById("getStream").src = picture;
-            document.getElementById("btnNvProduit").classList = "d-none";
-            document.getElementById("btnEditProduit").classList = "btn btn-primary";
-            document.getElementById("btnEditProduit").dataset.nbProduit = nbProduit;
-        })
+    $('#listeDesCourses').on('click', '#editProduit', function () {
+        var nbProduit = this.dataset.nbproduit
+        //adapter le form pour éditer
+        tab = localStorage.getItem(("produit", nbProduit)).split(",je split,");
+        nom = tab[0];
+        desc = tab[1];
+        picture = tab[2];
+        document.getElementById("Nom").value = nom;
+        document.getElementById("Desc").value = desc;
+        //si cam, cam stop
+        if (!theStream in window) {
+            theStream.getTracks()[0].stop();
+        }
+        document.getElementById("takePhoto").classList = "d-none";
+        document.getElementById("getStream").classList = "";
+        document.getElementById("getStream").src = picture;
+        document.getElementById("btnNvProduit").classList = "d-none";
+        document.getElementById("btnEditProduit").classList = "btn btn-primary";
+        document.getElementById("btnEditProduit").dataset.nbProduit = nbProduit;
     });
 
     //SUPRIMER UN PRODUIT
-    document.querySelectorAll('#suprProduit').forEach(item => {
-        item.addEventListener('click', event => {
-            var nbProduit = item.dataset.nbproduit;
-            localStorage.removeItem(nbProduit);
-            location.reload();
-        })
+    $('#listeDesCourses').on('click', '#suprProduit', function () {
+        var nbProduit = this.dataset.nbproduit;
+        localStorage.removeItem(nbProduit);
+        location.reload();
     });
 
     //FORM EDITION PRODUIT
