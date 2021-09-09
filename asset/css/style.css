@@ -1,21 +1,40 @@
 body {
   margin: 0px;
-  background-color: lightgrey;
 }
-nav {
-  position: sticky;
-  background-color: lightskyblue;
-  color: white;
+.nav_container {
   display: flex;
   justify-content: center;
+  position: sticky;
+}
+nav {
+  background-color: lightskyblue;
+  display: flex;
+  justify-content: space-between;
   font-size: x-large;
+  align-items: center;
+  width: 90%;
 }
-nav h1 {
-  text-align: center;
-  margin-left: 1vh;
-  margin-right: 1vh;
+.menu {
+  display: flex;
+  padding: 0px;
+  box-sizing: content-box;
 }
-.main_div {
+.menu a,
+nav a {
+  color: black;
+  text-decoration: none;
+  margin: 0% 2%;
+}
+.description {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.description img {
+  width: 10%;
+  height: auto;
+}
+.Projet_div {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue js</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Vue.js</h1>
+    <div class="container">
+        <div id="app1">
+            <p>{{ name }} âgé de {{ age }} ans est :</p>
+            <p v-if="free"> Prêt à travailler </p>
+            <p v-else>Pas prêt à travailler</p>
+            <button v-on:click="FctHoliday">{{holiday}}</button>
+        </div>
+        <ul id="app2">
+            <li v-for="item in items">
+                {{item.name}}
+            </li>
+            <form v-on:submit.prevent="onSubmit">
+                <p>ajouter un élément: </p><input v-model="NewElement">
+                <button type="submit">valider</button>
+            </form>
+        </ul>
+        <div id="app3">
+            <h3 class="color" v-bind:style="{backgroundColor: rgb}">changez ma couleur :</h3>
+            <p>R:<input type="number" min="0" max="255" placeholder="0" v-model="R"></p>
+            <p>G:<input type="number" min="0" max="255" placeholder="0" v-model="G"></p>
+            <p>B:<input type="number" min="0" max="255" placeholder="0" v-model="B"></p>
+        </div>
+        <div id="app4">
+            <h3>convertir, les cm et le pousses:</h3>
+            <p>cm:<input type="number" placeholder="0" v-model="cm"></p>
+            <p>pousse(s):<input type="number" placeholder="0" v-model="inch"></p>
+        </div>
+    </div>
+    <div class="container2">
+        <a class="lien" href="https://github.com/Yann-vdv/Yann-vdv.github.io/tree/main/Sites/vue.js">accèder à la page
+            git</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="main.js"></script>
+
+</body>
+
+</html>
