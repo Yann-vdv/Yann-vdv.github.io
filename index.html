@@ -5,31 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yann Van De Veire Alternant Développeur</title>
-    <link rel="stylesheet" href="asset/css/style.css">
-    <script src="asset/js/dynamique.js"></script>
+    <title>Sites Yann Van De Veire</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/dynamique.js"></script>
 </head>
 
 <body>
-    <div class="nav_container">
-        <nav>
-            <a href="/">CV</a>
-            <ul class="menu">
-                <a href="">Compétences</a>
-                <a href="">Projets</a>
-                <a href="">Contact</a>
-            </ul>
-        </nav>
-    </div>
-    <div class="description">
-        <div>
-            <h1>Yann Van De Veire</h1>
-            <h3>Développeur web fullstack</h3>
-            <button>Télécharger CV</button>
-        </div>
-        <img src="asset/images/CV.jpg" alt="photo de profil CV Yann Van De Veire">
-    </div>
-    <div class="Projet_div">
+    <nav>
+        <h1>Listes des sites de Yann Van De Veire</h1>
+    </nav>
+    <div class="main_div">
         <div class="divSite">
             <a class="titre" href="Sites/Défi/html/SuperMarioBros.html">SuperMarioBros</a>
             <a href="#nogo" onclick="afficher_div('descSMB')">voir plus ...</a>
@@ -37,7 +22,7 @@
                 <p>SuperMarioBros codé en javascript en première année; la quasi totalité de la recherche javascript
                     pour codé celui-ci a été personnelle.</p>
             </div>
-        </div>`
+        </div>
         <div class="divSite">
             <a class="titre" href="Sites/Projet front web/index.html">Projet front web (api)</a>
             <a href="#nogo" onclick="afficher_div('descPFW')">voir plus ...</a>
@@ -45,7 +30,14 @@
                 <p>petit site en seconde année dans le but d'utiliser quelques api.</p>
             </div>
             <a href="Sites/Projet front web last/index.html">Dernière version (27/07/2021)</a>
-        </div>`
+        </div>
+        <div class="divSite">
+            <a class="titre" href="Sites/vue.js/index.html">Vue.js</a>
+            <a href="#nogo" onclick="afficher_div('descPFW')">voir plus ...</a>
+            <div id="descPFW">
+                <p>Quelques essais avec vue.js</p>
+            </div>
+        </div>
     </div>
 </body>
 
