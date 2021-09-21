@@ -41,9 +41,35 @@ var app2 = new Vue({
 var app3 = new Vue({
     el: "#app3",
     data: {
-        R: "",
-        G: "",
-        B: "",
+        R: "0",
+        G: "0",
+        B: "0",
+    },
+    watch: {    //sans doute une meilleur manière de faire que 3x la même fct, à étudier
+        R: function () {
+            if (this.R > 255) {
+                this.R = "255"
+            }
+            else if (this.R < 0) {
+                this.R = ""
+            }
+        },
+        G: function () {
+            if (this.G > 255) {
+                this.G = "255"
+            }
+            else if (this.G < 0) {
+                this.G = ""
+            }
+        },
+        B: function () {
+            if (this.B > 255) {
+                this.B = "255"
+            }
+            else if (this.B < 0) {
+                this.B = ""
+            }
+        }
     },
     computed: {
         rgb: function () {
