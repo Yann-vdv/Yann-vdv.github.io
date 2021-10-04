@@ -5,37 +5,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sites Yann Van De Veire</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/dynamique.js"></script>
+    <title>Yann Van De Veire Alternant Développeur</title>
+    <link rel="stylesheet" href="asset/css/style.css">
+    <script src="asset/js/dynamique.js"></script>
 </head>
 
 <body>
     <nav>
-        <h1>Listes des sites de Yann Van De Veire</h1>
+        <a href="#">CV</a>
+        <ul>
+            <li><a href="#skills">Compétences</a></li>
+            <li><a href="#projects">Projets</a></li>
+            <!-- <li><a href="#contact">Contact</a></li> -->
+        </ul>
     </nav>
-    <div class="main_div">
+    <div class="description">
+        <div>
+            <h1>Yann Van De Veire</h1>
+            <h2>Développeur web fullstack</h2>
+            <a class="button" href="CV Yann Van De Veire.pdf" target="_blank">Télécharger CV</a>
+            <div>
+                <a href="https://github.com/Yann-vdv"><img src="asset/images/github_icon.png" alt=""></a>
+                <a href="https://www.linkedin.com/in/yann-van-de-veire/"><img src="asset/images/linkedin_icon2.png"
+                        alt=""></a>
+                <a href="mailto:yann.vdv.pro@gmail.com"><img src="asset/images/mail.jpg"></a>
+            </div>
+        </div>
+        <img class="profile" src="asset/images/CV.jpg" alt="photo de profil CV Yann Van De Veire">
+    </div>
+    <div id="skills">
+        <h1>Compétences</h1>
+        <div>
+            <div>HTML</div>
+            <div>CSS</div>
+            <div>JAVA</div>
+            <div>JAVASCRIPT</div>
+            <div>NODE.JS</div>
+            <div>JSON</div>
+            <div>PHP</div>
+            <div>PHPMYADMIN</div>
+            <div>C/C++</div>
+            <div>PYTHON</div>
+        </div>
+    </div>
+    <div class="Projet_div" id="projects">
+        <h1>Projets</h1>
         <div class="divSite">
-            <a class="titre" href="Sites/Défi/html/SuperMarioBros.html">SuperMarioBros</a>
-            <a href="#nogo" onclick="afficher_div('descSMB')">voir plus ...</a>
-            <div id="descSMB">
-                <p>SuperMarioBros codé en javascript en première année; la quasi totalité de la recherche javascript
-                    pour codé celui-ci a été personnelle.</p>
+            <img src="asset/images/SMB2.PNG">
+            <div class="divSite_desc">
+                <a class="titre" href="Sites/Défi/html/SuperMarioBros.html">SuperMarioBros</a>
+                <a id="descSMB_button" href="#nogo" onclick="afficher_div('descSMB')">voir plus</a>
+                <p id="descSMB">SuperMarioBros codé en javascript en première année; la quasi totalité de la recherche
+                    javascript pour codé celui-ci a été personnelle.</p>
             </div>
         </div>
         <div class="divSite">
-            <a class="titre" href="Sites/Projet front web/index.html">Projet front web (api)</a>
-            <a href="#nogo" onclick="afficher_div('descPFW')">voir plus ...</a>
-            <div id="descPFW">
-                <p>petit site en seconde année dans le but d'utiliser quelques api.</p>
+            <img src="asset/images/PFW.PNG">
+            <div class="divSite_desc">
+                <a class="titre" href="Sites/Projet front web/index.html">Projet front web (api)</a>
+                <a id="descPFW_button" href="#nogo" onclick="afficher_div('descPFW')">voir plus</a>
+                <p id="descPFW">petit site en seconde année dans le but d'utiliser quelques api.</p>
+                <a href="Sites/Projet front web last/index.html">Dernière version (27/07/2021)</a>
             </div>
-            <a href="Sites/Projet front web last/index.html">Dernière version (27/07/2021)</a>
         </div>
         <div class="divSite">
-            <a class="titre" href="Sites/vue.js/index.html">Vue.js</a>
-            <a href="#nogo" onclick="afficher_div('descPFW')">voir plus ...</a>
-            <div id="descPFW">
-                <p>Quelques essais avec vue.js</p>
+            <img src="asset/images/V.PNG">
+            <div class="divSite_desc">
+                <a class="titre" href="Sites/vue.js/index.html">Vue.js</a>
+                <a id="descV_button" href="#nogo" onclick="afficher_div('descV')">voir plus</a>
+                <p id="descV">Quelques essais avec vue.js</p>
             </div>
         </div>
     </div>
