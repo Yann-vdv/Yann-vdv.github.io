@@ -108,6 +108,11 @@ nav a:hover {
   border-top-right-radius: 8px;
   border-bottom: 1px solid black;
 }
+.Projet_div iframe {
+  height: 50vh;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
 .divSite {
   margin: 6vh;
   width: 50vw;

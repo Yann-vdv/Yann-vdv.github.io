@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="asset/css/style.css">
+</head>
+
+<body>
+    <h1>Picsou</h1>
+    <div class="flex">
+        <div class="result">
+            <h3>Tableau des billets : </h3>
+            <p id="tabDollars"></p>
+        </div>
+        <div class="result">
+            <h3>Somme des dollars : </h3>
+            <p id="tabDollarsTotal"></p>
+        </div>
+        <div class="result">
+            <h3>Nombre de billets : </h3>
+            <p id="tabDollarsNb"></p>
+        </div>
+    </div>
+
+    <script>
+        fetch("http://localhost:10001/picsou/dollars")
+            .then(response => response.json())
+            .then(data => document.getElementById("tabDollars").innerHTML = data);
+        fetch("http://localhost:10001/picsou/dollars/total")
+            .then(response => response.json())
+            .then(test);
+        function test(data) {
+            document.getElementById("tabDollarsTotal").innerHTML = `${data["total"]}`;
+            document.getElementById("tabDollarsNb").innerHTML = `${data["nb_items"]}`;
+        };
+    </script>
+</body>
+
+</html>

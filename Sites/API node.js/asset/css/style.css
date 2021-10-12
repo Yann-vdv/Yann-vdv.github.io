@@ -1,0 +1,10 @@
+h1 {
+  text-align: center;
+}
+.flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+.result {
+  text-align: center;
+}

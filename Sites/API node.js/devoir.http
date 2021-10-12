@@ -1,0 +1,39 @@
+#lien vers le site : http://localhost:10001/index.html
+
+# Pour générer un nombre aléatoire entre 10 et 50 :
+Get http://localhost:10001/alea/10/50
+###
+# Pour générer un nombre aléatoire entre 10 et 5 (donc ne marchera pas) :
+Get http://localhost:10001/alea/10/5
+###
+
+#test d'une requête et de l'ordre d'apparition de différent élément dans celle ci, ici l'objectif était :
+#retourner une 200 si le texte commence par “riri”, se termine par “loulou” et contient au milieu le texte “fifi”
+Get http://localhost:10001/donald/neveux/coucou_riri-fifietloulou
+###
+Get http://localhost:10001/donald/neveux/riri_joue_avec_fifi_et_loulou
+###
+
+#permet de donner des billets de 5 ou 10 dollars a Picsou
+POST http://localhost:10001/picsou/10
+###
+POST http://localhost:10001/picsou/5
+###
+
+#permet de regarder les billets que possède Picsou
+GET http://localhost:10001/picsou/dollars
+###
+POST http://localhost:10001/picsou/dollars
+###
+
+#permet de voir combien d'argent et de billets possède Picsou
+GET http://localhost:10001/picsou/dollars/total
+###
+POST http://localhost:10001/picsou/dollars/total
+###
+
+#permet de ruiner Picsou
+DELETE http://localhost:10001/picsou/bankrup
+###
+POST http://localhost:10001/picsou/bankrup
+###
