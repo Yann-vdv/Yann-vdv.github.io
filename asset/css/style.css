@@ -7,6 +7,16 @@ body {
 a {
   text-decoration: none;
 }
+p {
+  margin: 0px;
+}
+p,
+a {
+  font-size: 1.2em;
+}
+h1 {
+  font-size: 3em;
+}
 nav {
   position: sticky;
   font-size: x-large;
@@ -20,18 +30,14 @@ nav {
   height: 8vh;
   top: 0;
 }
-nav ul {
-  list-style-type: none;
-}
-nav li {
-  float: left;
+nav div {
+  display: flex;
 }
 nav a {
   display: block;
   color: white;
-  text-decoration: none;
   text-align: center;
-  padding: 3vh;
+  padding: 2vw;
 }
 nav a:hover {
   color: antiquewhite;
@@ -43,7 +49,7 @@ nav a:hover {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 10vh 0;
+  margin: 6vw 0;
 }
 .description div div a {
   margin: 0 0.3vw;
@@ -57,7 +63,6 @@ nav a:hover {
   height: auto;
   border: 1px solid white;
   border-radius: 100%;
-  margin: 3vh;
 }
 .button {
   display: inline-block; /* pour éviter éfondrement de margin */
@@ -102,20 +107,21 @@ nav a:hover {
   align-items: center;
 }
 .Projet_div img {
-  width: 50vw;
+  width: 60vw;
   height: auto;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom: 1px solid black;
 }
 .Projet_div iframe {
-  height: 50vh;
+  height: 35vw;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  border-bottom: 2px solid black;
 }
 .divSite {
   margin: 6vh;
-  width: 50vw;
+  width: 60vw;
   height: fit-content;
   color: black;
   border: 2px solid black;
@@ -129,7 +135,6 @@ nav a:hover {
   align-items: center;
   margin: 1vh;
 }
-
 .divSite a {
   margin: 1vh;
 }
@@ -140,9 +145,26 @@ nav a:hover {
   text-align: center;
   margin: 2vh;
 }
-p {
-  margin: 0px;
+.titre,
+h2 {
+  font-size: 2em;
+  text-align: center;
 }
-.titre {
-  font-size: x-large;
+@media only screen and (max-width: 850px) {
+  .Projet_div img,
+  .divSite {
+    width: 80vw;
+  }
+  .Projet_div iframe {
+    height: 50vw;
+  }
+  .description {
+    flex-direction: column-reverse;
+  }
+  .description div {
+    text-align: center;
+  }
+  .profile {
+    width: 50vw;
+  }
 }
