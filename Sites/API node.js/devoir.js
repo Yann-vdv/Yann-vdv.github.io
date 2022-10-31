@@ -53,7 +53,7 @@ const serveur = http.createServer((req, res) => {
         res.end(`{ "total": "${total}", "nb_items": "${nbtotal}" }`);
     }
     else if (req.method === "GET" && req.url === "/index.html") {
-        fs.readFile("Sites/API node.js/index.html", "utf8", (err, data) => {
+        fs.readFile("index.html", "utf8", (err, data) => {
             if (err) {
                 console.error(err);
                 return;
@@ -67,7 +67,7 @@ const serveur = http.createServer((req, res) => {
     }
     //-------------------------------CSS--------------------------------//
     else if (req.method === "GET" && req.url === "/asset/css/style.css") {
-        fs.readFile("Sites/API node.js/asset/css/style.css", "utf8", (err, data) => {
+        fs.readFile("asset/css/style.css", "utf8", (err, data) => {
             if (err) {
                 console.error(err);
                 return;
